@@ -16,5 +16,8 @@
     "gulp-nodemon": "^2.2.1",
     "gulp-sass": "^4.0.1",
     "nodemon": "^1.18.3"
+  },
+  "dependencies": {
+    "ejs": "^2.6.1"
   }
 }

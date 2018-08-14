@@ -57,6 +57,232 @@
         <li>Check <a href="../ExperimentScripts/globals.js"></a></li>
     </ul>
 
+    <h2>Function Expressions</h2>
+    <ul>
+        <li>
+<pre>
+function callFunction(fun){
+    fun();
+}
+
+var sayBye = function(){
+    console.log('bye');
+}
+
+// passing a function in another function
+callFunction(sayBye);
+</pre>
+        </li>
+    </ul>
+    
+
+    <h2>Modules</h2>
+
+    <p>There are many module patterns or ways to assign objects to the module.exports</p>
+
+    <ul>
+        <li><code>var counter = function(){} </code>/// <code>module.exports.counter = counter; </code></li>
+        <li><code>module.exports.counter = function(){}</code></li>
+        <li><code>var counter = function(){}, var adder = function(){}</code>/// <code>module.exports = {counter : counter, adder : adder}</code></li>
+        <li><code>var methods = {}, methods.counter = function(){}</code>/// <code>module.exports.methods = methods</code></li>
+    </ul>
+
+    <p>See ../ExperimentScripts/ModuleExamples and ModulePatterns</p>
+
+    <h2>Event Emitter</h2>
+
+    <ul>
+        <li>when an object has an event emitter it can now do something when the event happends</li>
+        <li>can manually emit an event by using object.emit</li>
+        <li>utils module can make an object inherit something</li>
+    </ul>
+
+    <p>see ../ExperimentScripts/EventModuleEmitter</p>
+
+    <h2>Creating/Deleting Directories/Deleting Files</h2>
+    <ul>
+        <li><code>fs.unlink('writeMe.txt');</code></li>
+        <li><code>fs.mkdir('stuff');</code></li>
+        <li><code>fs.rmdir('stuff');</code></li>
+        <li>make sure the directory is empty first you might want to unlink files then rmdir as the callback</li>
+    </ul>
+
+    <h2>Clients and Servers</h2>
+
+    <h3>Requests and Response info</h3>
+
+    <p>client/browser requests to the server which it handles and sends a response to the client to update what we see maybe.</p>
+    
+    <h4>Protocols</h4>
+    <ul>
+        <li>the client and server commmunicates via a set of rules called a protocol</li>
+        <li>like a german and italian guy can agree to talk in English to be able to understand each other</li>
+        <li>when the client needs to make a request to the server  it needs to connect to the servers ip-address which opens up a <b>socket</b> or a channel in which the information can be sent</li>
+        <li>depending on what the client wants from the server, different protocols can be used.</li>
+        <li><b>http is used for websites/ftp is a file transfer protocol</b></li>
+        <li>once the structure of the of the information has been decided on like http for example. The information is then send through the socket using the <b>TCP</b> protocol. The data is structured using an http protocol for example but is sent to each other using the TCP.</li>
+        <li><b>TCP</b> practically splits the data into small pieces of data into <b>packets</b>.</li>
+    </ul>
+
+    <h4>Ports</h4>
+
+    <ul>
+        <li>a program on a computer can listen for requests sent on a particular port number</li>
+        <li>e.g. 172.24.86.76:3000</li>
+        <li></li>
+    </ul>
+
+    <h2>Creating Servers. http</h2>
+
+    <h3>Headers</h3>
+    <ul>
+        <li>like meta information that is not displayed like the type etc</li>
+        <li></li>
+    </ul>
+
+    <h4>Response Headers</h4>
+    <ul>
+        <li>content-type</li>
+        <li><b>status</b> like a 200 ok or a 400 not found</li>
+    </ul>
+
+    <h2>Buffers and Streams</h2>
+
+    <ul>
+        <li>temporary storage for a chunch of data for transfer</li>
+        <li>DATA --> Buffer(temporary storage, it collects a small chunk until it is full) --> Data passed on</li>
+        <li>Can start to consume data even if not all has arrived</li>
+        <li>In node.js we can create streams to read and write data for increased performance</li>
+        <li></li>
+    </ul>
+
+    <h2>Readable/Writable Streams</h2>
+
+    <ul>
+        <li>streams are used to break up data into chunks/buffers so that the data can be consumed before the whole file is read/written</li>
+        <li>this can be observed by logging the task and see how many "chunks" are being sent</li>
+        <li>these tasks are quite common thus the method called <b>"pipes"</b></li>
+    </ul>
+
+    <p><b>see ../ExperimentScripts/ReadStreams or WriteStreams</b></p>
+    <h3>Duplex Stream</h3>
+
+    <p>Can read and write to a stream</p>
+    
+
+    <h2>Pipes</h2>
+
+    <ul>
+        <li>can take data from a read stream to a write stream</li>
+        <li>automatically listens for an event</li>
+        <li>has to be used on a read stream so it can pipe to a write stream</li>
+        <li>can be used to read and send a response check the js file</li>
+    </ul>
+
+    <h2>Serving HTML Pages</h2>
+
+    <ul>
+        <li>content-type: text/html instead of text/plain</li>
+    </ul>
+
+    <h2>Serving JSON to the client</h2>
+
+    <ul>
+        <li>content-type: application/json</li>
+        <li>no streams just sending the JSON in the end method</li>
+        <li>the res.end expects a string so it must be JSON stringified</li>
+        <li>check the network tab for the request</li>
+    </ul>
+
+    <h2>Basic Routing</h2>
+
+    <ul>
+        <li>use the req.url property to determine what pages to serve to the user</li>
+        <li>use if statements. can make the code very long, thus express</li>
+        <li>create read stream then pipe the response page</li>
+    </ul>
+
+    <h2>Express</h2>
+
+    <ul>
+        <li>easy and flexible routing system</li>
+        <li>express can determin the content-type, can skip the headers</li>
+        <li>integrates many templating engines</li>
+        <li>contains a middleware framework</li>
+        <li>access to a variety of methods</li>
+        <li>http methods/verbs <b>GET/POST/DELETE/PUT</b></li>
+        <li>
+            <pre>
+app.get('/profile/:name', (req,res)=>{
+    res.send(`You requested to see a profile with the name of ${req.params.name}`);
+});    
+            </pre>
+        </li>
+
+    <h2>Templating Engines</h2>
+    <h3>Ejs</h3>
+    <ul>
+        <li>install ejs npm</li>
+        <li>tell express ejs is the view engine</li>
+        <li><code>app.set('view engine', 'ejs')</code></li>
+        <li>by default it looks into the views folder</li>
+        <li><code><%= person %></code>: to output data use the = sign, doing code there is no =</li>
+    </ul>
+
+    <p>see Templating Engines/Partials</p>
+
+    
+    <h2>Middleware and static files</h2>
+
+    <ul>
+        <li>need a simple way to deal with static file requests using express built-in middleware</li>
+        <li>middleware is the code that runs between the request and response</li>
+        <li>see MiddleWare</li>
+    </ul>
+
+    <h2>Query Strings</h2>
+    <ul>
+        <li>additional data adden on to an http request in the form of a name:value pair</li>
+        <li>Begins with a ?</li>
+        <li>name value pair & name value pair & name value pair</li>
+        <li>parse the request and use the appended URL data</li>
+    </ul>
+
+    <p>see QueryStrings /contact endpoint and submit some query ?name=ryu&dept=marketing</p>
+
+    <h2>Handling POST Requests and body-parser</h2>
+
+    <ul>
+        <li>POST is a request method</li>
+        <li>asks the server to accept/store data that is enclosed in the body of the request</li>
+        <li>unlike get requests that is in the query string</li>
+        <li>
+            <pre>
+                <form id="contact-form" method="POST" action=/contact>
+                    <label for="who">Who do you want to contact?</label>
+                    <input type="text" name="who" value="<%= qs.person %>">
+        
+                    <label for="department">Which department?</label>
+                    <input type="text" name="department" value="<%= qs.dept %>">
+        
+                    <label for="email">Your email</label>
+                    <input type="email" name="email">
+        
+                    <input type="submit" value="submit">
+                    
+                </form>
+            </pre>
+        </li>
+        <li>action is the endpoint/url to be hit, it will only be hit by a method="POST" so it can be the same name as a get</li>
+        <li>name="" is the name value pair returned and parsed as a name value pair</li>
+
+        <h3>Body parser</h3>
+        <ul>
+            <li>a middleware that gets in between the request and callbacks</li>
+            <li>parses the unformatted req.body data to a usable object</li>
+            <li>can use a route specific parser(recommended) or make all post requests parsed by it</li>
+        </ul>
+    </ul>
 
     <a href="https://github.com/iamshaunjp/node-js-playlist">Git-Hub Link</a>
 
